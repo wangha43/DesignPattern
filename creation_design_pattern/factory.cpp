@@ -1,112 +1,59 @@
-#include <string>
 #include <stdexcept>
 #include <iostream>
 #include <memory>
-
 using namespace std;
 
-// class Pizza
-// {
-// public:
-// 	void setDough(const string & dough)
-// 	{
-// 		m_dough = dough;
-// 	}
-
-// 	void setSayce(const string & sauce)
-// 	{
-// 		m_sauce = sauce;
-// 	}
-
-// 	void setTopping(const string & topping)
-// 	{
-// 		m_topping = topping;
-// 	}
-
-// 	void open()const
-// 	{
-// 		cout << "" <<;
-// 	}
-
-// private:
-// 	string m_dough;
-// 	string m_sauce;
-// 	string m_topping;
-// };
-
-class Pizza
-{
+class Pizza {
 public:
-	virtual int getPrice() const;
-	virtual ~Pizza(){cout << "eating" <<endl;}; 
+	virtual int getPrice() const = 0;
+	virtual ~Pizza() {};  /* without this, no destructor for derived Pizza's will be called. */
 };
 
-class HamAndMushroomPizza:public Pizza
-{
+class HamAndMushroomPizza : public Pizza {
 public:
-	virtual int getPrice() const
-	{
-		return 850;
-	}
-	virtual ~HamAndMushroomPizza(){cout << "eaten" <<endl;};
+	virtual int getPrice() const { return 850; };
+	virtual ~HamAndMushroomPizza() {};
 };
 
-class DeluxePizza:public Pizza
-{
+class DeluxePizza : public Pizza {
 public:
-	virtual int getPrice() const
-	{
-		return 1050;
-	}
-	virtual ~DeluxePizza(){cout << "eaten" <<endl;};
+	virtual int getPrice() const { return 1050; };
+	virtual ~DeluxePizza() {};
 };
 
-class HahawaiianPizza:public Pizza
-{
+class HawaiianPizza : public Pizza {
 public:
-	virtual int getPrice() const
-	{
-		return 1150;
-	}
-	virtual ~HahawaiianPizza(){
-		cout << "eaten" <<endl;
-	};	
+	virtual int getPrice() const { return 1150; };
+	virtual ~HawaiianPizza() {};
 };
 
-
-class PizzaFactory
-{
+class PizzaFactory {
 public:
-	enum PizzaType
-	{
-		HamAndMushroom,
+	enum PizzaType {
+		HamMushroom,
 		Deluxe,
-		Hahawaiian
+		Hawaiian
 	};
-
-	static unique_ptr<Pizza> createPizza(PizzaType pizzaType)
-	{
-		switch(pizzaType)
-		{
-			case HamAndMushroom:
-				return make_unique<HamAndMushroomPizza>();
-			case Deluxe:
-				return make_unique<DeluxePizza>();
-			case Hahawaiian:
-				return make_unique<HahawaiianPizza>();
+	//a enum contain all type
+	static unique_ptr<Pizza> createPizza(PizzaType pizzaType) {
+		switch (pizzaType) {
+		case HamMushroom: return make_unique<HamAndMushroomPizza>();
+		case Deluxe:      return make_unique<DeluxePizza>();
+		case Hawaiian:    return make_unique<HawaiianPizza>();
 		}
-		throw "invalid pizza type";
+		throw "invalid pizza type.";
 	}
 };
 
 void pizza_information(PizzaFactory::PizzaType pizzatype)
 {
 	unique_ptr<Pizza> pizza = PizzaFactory::createPizza(pizzatype);
-	cout << "Price of "<<pizzatype <<" is " << pizza->getPrice() <<endl;
+	cout << "Price of " << pizzatype << " is " << pizza->getPrice() << std::endl;
 }
 
 int main()
 {
-	pizza_information(PizzaFactory::HamAndMushroom);
-	return 0;
+	pizza_information(PizzaFactory::HamMushroom);
+	pizza_information(PizzaFactory::Deluxe);
+	pizza_information(PizzaFactory::Hawaiian);
 }
