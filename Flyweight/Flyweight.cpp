@@ -40,7 +40,7 @@ UnsharedConcreteFlyweight::~UnsharedConcreteFlyweight()
 
 void UnsharedConcreteFlyweight::Operation(const string& extrinsicState)
 {
-    cout << "extrinsicState" << endl;
+    cout << "externstate" << endl;
 }
 
 FlyweightFactory::FlyweightFactory()
